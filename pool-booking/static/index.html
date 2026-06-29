@@ -24,57 +24,50 @@
     background:radial-gradient(120% 90% at 50% -10%, #134a31 0%, var(--felt-edge) 60%, #06160e 100%);
     min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   a{color:var(--chalk-bright)}
-  .wrap{max-width:1180px;margin:0 auto;padding:24px 18px 60px}
+  .wrap{max-width:640px;margin:0 auto;padding:24px 18px 60px}
 
-  header.marquee{border:2px solid var(--rail-light);border-radius:16px;
-    background:linear-gradient(180deg, var(--rail-light), var(--rail) 70%);
-    box-shadow:0 14px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
-    padding:18px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:space-between;position:relative;overflow:hidden;width:100%}
+  header.marquee{border:1.5px solid rgba(201,162,75,.5);border-radius:22px;
+    background:radial-gradient(140% 130% at 50% 0%, #5e3c24 0%, #3c2614 70%, #2a1a0d 100%);
+    box-shadow:0 16px 44px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+    padding:24px 22px;display:flex;flex-direction:column;align-items:center;gap:13px;text-align:center;position:relative;overflow:hidden;width:100%}
   header.marquee::after{content:"";position:absolute;inset:0;
-    background:repeating-linear-gradient(90deg,transparent 0 38px,rgba(0,0,0,.06) 38px 40px);pointer-events:none}
-  .brand{display:flex;align-items:center;gap:16px;min-width:0}
-  .logo-balls{display:flex;align-items:flex-end;position:relative;flex-shrink:0}
+    background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(0,0,0,.05) 46px 48px);pointer-events:none}
+  .villa{font-family:var(--display);font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    margin:0;font-size:clamp(32px,8.5vw,46px);line-height:.95;color:var(--cue);text-shadow:0 2px 0 rgba(0,0,0,.35)}
+  .subrow{display:flex;align-items:center;justify-content:center;gap:14px}
+  .logo-balls{display:flex;align-items:center;position:relative;flex-shrink:0}
   .b{width:34px;height:34px;border-radius:50%;position:relative;
-    box-shadow:inset -6px -7px 12px rgba(0,0,0,.45),inset 4px 4px 8px rgba(255,255,255,.35);margin-right:-9px}
-  .b .num{position:absolute;inset:0;display:grid;place-items:center}
-  .b .num span{background:#fff;width:15px;height:15px;border-radius:50%;display:grid;place-items:center;font:700 9px/1 var(--mono);color:#111}
+    box-shadow:inset -6px -7px 12px rgba(0,0,0,.45),inset 4px 4px 8px rgba(255,255,255,.35);margin-right:-8px}
   .b.cue{background:radial-gradient(circle at 38% 32%, #fff,#e7e0cf 70%,#cabfa6)}
-  .b.eight{background:radial-gradient(circle at 38% 32%, #3a3530,#13100e 72%)}
   .b.red{background:radial-gradient(circle at 38% 32%, #e8654f,#a31d12 72%)}
-  .title-block h1{font-family:var(--display);font-weight:700;letter-spacing:.05em;text-transform:uppercase;
-    margin:0;font-size:clamp(22px,4.4vw,36px);color:var(--cue);line-height:.98;text-shadow:0 2px 0 rgba(0,0,0,.35)}
-  .title-block .sub{font-family:var(--mono);font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass-bright);margin-top:5px}
-  .title-block .hours{font-family:var(--mono);font-size:13.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--cue);opacity:.85;margin-top:4px}
-
-  .shoam{display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:relative}
-  .shoam-logo{display:flex;flex-direction:column;line-height:1;padding-right:14px;border-right:1px solid rgba(255,255,255,.18)}
-  .shoam-logo .mark{font-family:var(--display);font-weight:700;letter-spacing:.14em;font-size:26px;color:var(--cue)}
-  .shoam-logo .mark b{color:var(--brass-bright)}
-  .shoam-logo .tag{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:3px}
-  .stores{display:flex;gap:8px;flex-wrap:wrap}
-  .store{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--cue);
-    background:#0c0c0e;border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:7px 12px 7px 10px;transition:.15s}
+  .b.eight{background:radial-gradient(circle at 38% 32%, #3a3530,#13100e 72%);margin-right:0}
+  .sub{font-family:var(--display);font-weight:600;font-size:clamp(19px,5.4vw,27px);letter-spacing:.06em;text-transform:uppercase;color:var(--brass-bright)}
+  .hr{width:80%;height:1px;background:linear-gradient(90deg,transparent,rgba(201,162,75,.65),transparent);margin:1px 0}
+  .hours{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;font-family:var(--mono);font-weight:700;font-size:clamp(14px,3.6vw,17px);letter-spacing:.03em;text-transform:uppercase;color:var(--cue)}
+  .hours svg{width:18px;height:18px;color:var(--cue);opacity:.9;flex-shrink:0}
+  .stores{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;width:100%;margin-top:4px}
+  .store{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--cue);flex:1;min-width:150px;justify-content:center;
+    background:#0b0b0d;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px 14px;transition:.15s}
   .store:hover{border-color:var(--brass);transform:translateY(-1px)}
-  .store svg{width:20px;height:20px;flex-shrink:0}
-  .store span{display:flex;flex-direction:column;line-height:1.05}
-  .store small{font-size:10.5px;letter-spacing:.05em;opacity:.75;text-transform:uppercase}
-  .store b{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:.02em}
+  .store svg{width:26px;height:26px;flex-shrink:0}
+  .store span{display:flex;flex-direction:column;line-height:1.08;text-align:left}
+  .store small{font-size:9.5px;letter-spacing:.04em;opacity:.8;text-transform:uppercase}
+  .store b{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.02em}
 
   .grid-2{display:grid;grid-template-columns:1fr;gap:22px;margin-top:22px}
   @media(max-width:900px){.grid-2{grid-template-columns:1fr}}
-  .panel{border:2px solid var(--rail);border-radius:16px;
-    background:linear-gradient(180deg, rgba(255,255,255,.02), transparent),
-      radial-gradient(140% 100% at 50% 0%, var(--felt) 0%, var(--felt-deep) 100%);
-    box-shadow:0 16px 44px rgba(0,0,0,.4), inset 0 0 0 6px var(--rail), inset 0 0 60px rgba(0,0,0,.3);padding:22px 20px}
+  .panel{border:1.5px solid rgba(201,162,75,.4);border-radius:22px;
+    background:radial-gradient(150% 115% at 50% 0%, #176544 0%, var(--felt-deep) 55%, #082a1b 100%);
+    box-shadow:0 16px 44px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.05), inset 0 0 70px rgba(0,0,0,.25);padding:26px 22px}
   .panel-head{display:flex;align-items:center;gap:12px;margin:0 0 4px}
-  .panel-head h2{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-weight:600;font-size:25px;margin:0}
-  .hint{font-size:15.5px;color:var(--muted);margin:0}
+  .panel-head h2{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-weight:700;font-size:32px;margin:0;color:var(--cue)}
+  .hint{font-size:16.5px;color:#b7ccc1;margin:0;line-height:1.45}
   .diamonds{display:flex;justify-content:space-between;margin:16px 2px;opacity:.85}
   .diamonds i{width:9px;height:9px;background:var(--brass);transform:rotate(45deg);box-shadow:0 0 0 2px rgba(0,0,0,.25)}
 
-  .admin-btn{margin-left:auto;font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--muted);background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.16);border-radius:999px;
-    padding:6px 12px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px}
+  .admin-btn{margin-left:auto;font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--brass-bright);background:rgba(0,0,0,.2);border:1.5px solid rgba(201,162,75,.6);border-radius:999px;
+    padding:9px 16px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;flex-shrink:0}
   .admin-btn:hover{border-color:var(--brass);color:var(--cue)}
   .admin-btn.on{border-color:var(--ok);color:var(--ok)}
   .admin-banner{display:none;align-items:center;gap:10px;margin-top:12px;padding:9px 13px;border-radius:10px;
@@ -110,9 +103,9 @@
   .slot{position:relative;border-radius:11px;padding:12px 10px 11px;cursor:pointer;border:1px solid rgba(255,255,255,.10);
     background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.12));text-align:left;transition:.14s;color:var(--cue);font:inherit}
   .slot:hover{border-color:var(--chalk-bright);transform:translateY(-1px)}
-  .slot .t{font-family:var(--mono);font-weight:700;font-size:21px;letter-spacing:.02em}
+  .slot .t{font-family:var(--mono);font-weight:700;font-size:23px;letter-spacing:.02em}
   .slot .meta{font-size:14.5px;color:var(--muted);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .slot.open .meta{color:var(--chalk-bright)}
+  .slot.open .meta{color:#bcd0c6}
   .slot.booked{background:linear-gradient(180deg, rgba(0,0,0,.4), rgba(0,0,0,.55));border-color:rgba(201,162,75,.4)}
   .slot.booked .t{color:var(--brass-bright)}
   .slot.booked .meta{color:var(--cue)}
@@ -145,6 +138,9 @@
     border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:13px 6px;background:rgba(0,0,0,.22);font-size:15px;transition:.14s;text-transform:capitalize;color:var(--cue)}
   .lvl-row .lvl-btn:hover{border-color:var(--brass)}
   .lvl-row .lvl-btn.sel{border-color:var(--brass-bright);background:rgba(201,162,75,.16)}
+  .mform{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .mform .field{margin-top:11px}
+  .mform .full{grid-column:1 / -1}
 
   .btn{font-family:var(--display);text-transform:uppercase;letter-spacing:.07em;font-weight:600;font-size:17px;
     border:none;border-radius:10px;padding:16px 16px;cursor:pointer;transition:.15s;width:100%}
@@ -194,22 +190,20 @@
   .dot.off{background:var(--danger);box-shadow:0 0 8px var(--danger)}
 
   footer{margin-top:30px;text-align:center}
-  footer .pow{font-family:var(--mono);font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  footer .pow{font-family:var(--mono);font-size:14.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
   footer .pow b{color:var(--brass-bright)}
 
   @media(max-width:680px){
-    .wrap{padding:14px 11px 44px}
-    header.marquee{padding:15px;gap:12px;flex-direction:column;align-items:stretch}
-    .brand{gap:12px;justify-content:center}
-    .title-block h1{font-size:30px}
-    .shoam{width:100%;flex-direction:column;align-items:center;gap:12px;padding-top:13px;border-top:1px solid rgba(255,255,255,.14)}
-    .shoam-logo{border-right:none;padding-right:0;align-items:center;text-align:center}
-    .stores{width:100%;gap:9px}
-    .store{flex:1;justify-content:center;min-width:0}
-    .panel{padding:18px 14px}
-    .tabs{gap:6px}
-    .tabs .tab{flex:1;text-align:center;min-width:0;padding:18px 6px;font-size:14px;letter-spacing:.02em}
-    .slots{grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:9px}
+    .wrap{padding:14px 12px 44px}
+    header.marquee{padding:20px 16px;gap:12px}
+    .store{min-width:0}
+    .store small{font-size:9px}
+    .store b{font-size:15px}
+    .panel{padding:20px 16px}
+    .panel-head h2{font-size:28px}
+    .tabs{gap:7px}
+    .tabs .tab{flex:1;text-align:center;min-width:0;padding:16px 6px;font-size:14px;letter-spacing:.02em}
+    .slots{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px}
     .modal-acts .btn{min-width:0}
     .player .acts{flex-wrap:wrap}
   }
@@ -224,34 +218,29 @@
 <div class="wrap">
 
   <header class="marquee">
-    <div class="brand">
+    <h1 class="villa">The Snooker Villa</h1>
+    <div class="subrow">
       <div class="logo-balls" aria-hidden="true">
         <div class="b cue"></div>
         <div class="b red"></div>
-        <div class="b eight"><div class="num"><span>8</span></div></div>
+        <div class="b eight"></div>
       </div>
-      <div class="title-block">
-        <h1>The Snooker Villa</h1>
-        <div class="sub">Snooker &amp; Pool · ਸਨੂਕਰ ਤੇ ਪੂਲ</div>
-        <div class="hours">Open 10:00 AM – 11:00 PM · 7 days</div>
-      </div>
+      <span class="sub">Snooker &amp; Pool</span>
     </div>
-
-    <div class="shoam">
-      <div class="shoam-logo">
-        <span class="mark">SH<b>O</b>AM</span>
-        <span class="tag">The Local Marketplace</span>
-      </div>
-      <div class="stores">
-        <a class="store" href="https://apps.apple.com/us/app/shoam/id1489841636" target="_blank" rel="noopener" aria-label="Download SHOAM on the App Store">
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="#f3eee2"><path d="M16.36 12.78c-.02-2.4 1.96-3.55 2.05-3.6-1.12-1.64-2.86-1.86-3.48-1.89-1.48-.15-2.89.87-3.64.87-.75 0-1.91-.85-3.14-.83-1.62.02-3.11.94-3.94 2.39-1.68 2.91-.43 7.22 1.21 9.58.8 1.16 1.75 2.46 3 2.41 1.2-.05 1.66-.78 3.11-.78 1.45 0 1.86.78 3.14.75 1.3-.02 2.12-1.18 2.91-2.34.92-1.34 1.3-2.64 1.32-2.71-.03-.01-2.53-.97-2.5-3.86zM14 5.3c.66-.8 1.11-1.92.99-3.03-.95.04-2.11.63-2.79 1.43-.61.71-1.15 1.85-1 2.94 1.06.08 2.14-.54 2.8-1.34z"/></svg>
-          <span><small>Download on the</small><b>App Store</b></span>
-        </a>
-        <a class="store" href="https://play.google.com/store/apps/details?id=com.freshecart&hl=en" target="_blank" rel="noopener" aria-label="Get SHOAM on Google Play">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.2.2-.32.52-.32.93v17.54c0 .41.12.73.33.92l.06.06 9.83-9.82v-.23L3.66 2.24l-.06.06z" fill="#54bbdc"/><path d="M16.78 15.5l-3.28-3.28v-.23l3.28-3.28.07.04 3.88 2.2c1.11.63 1.11 1.66 0 2.3l-3.88 2.2-.07.05z" fill="#e6c473"/><path d="M16.85 15.46l-3.35-3.35-9.89 9.89c.37.39.97.43 1.65.05l11.59-6.59z" fill="#5fbf8a"/><path d="M16.85 8.76L5.26 2.17c-.68-.39-1.28-.34-1.65.05l9.89 9.89 3.35-3.35z" fill="#d4664f"/></svg>
-          <span><small>Get it on</small><b>Google Play</b></span>
-        </a>
-      </div>
+    <div class="hr"></div>
+    <div class="hours">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Open 10:00 AM &ndash; 11:00 PM &nbsp;|&nbsp; 7 Days
+    </div>
+    <div class="stores">
+      <a class="store" href="https://apps.apple.com/us/app/shoam/id1489841636" target="_blank" rel="noopener" aria-label="Download SHOAM on the App Store">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="#f3eee2"><path d="M16.36 12.78c-.02-2.4 1.96-3.55 2.05-3.6-1.12-1.64-2.86-1.86-3.48-1.89-1.48-.15-2.89.87-3.64.87-.75 0-1.91-.85-3.14-.83-1.62.02-3.11.94-3.94 2.39-1.68 2.91-.43 7.22 1.21 9.58.8 1.16 1.75 2.46 3 2.41 1.2-.05 1.66-.78 3.11-.78 1.45 0 1.86.78 3.14.75 1.3-.02 2.12-1.18 2.91-2.34.92-1.34 1.3-2.64 1.32-2.71-.03-.01-2.53-.97-2.5-3.86zM14 5.3c.66-.8 1.11-1.92.99-3.03-.95.04-2.11.63-2.79 1.43-.61.71-1.15 1.85-1 2.94 1.06.08 2.14-.54 2.8-1.34z"/></svg>
+        <span><small>Download on the</small><b>App Store</b></span>
+      </a>
+      <a class="store" href="https://play.google.com/store/apps/details?id=com.freshecart&hl=en" target="_blank" rel="noopener" aria-label="Get SHOAM on Google Play">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.2.2-.32.52-.32.93v17.54c0 .41.12.73.33.92l.06.06 9.83-9.82v-.23L3.66 2.24l-.06.06z" fill="#54bbdc"/><path d="M16.78 15.5l-3.28-3.28v-.23l3.28-3.28.07.04 3.88 2.2c1.11.63 1.11 1.66 0 2.3l-3.88 2.2-.07.05z" fill="#e6c473"/><path d="M16.85 15.46l-3.35-3.35-9.89 9.89c.37.39.97.43 1.65.05l11.59-6.59z" fill="#5fbf8a"/><path d="M16.85 8.76L5.26 2.17c-.68-.39-1.28-.34-1.65.05l9.89 9.89 3.35-3.35z" fill="#d4664f"/></svg>
+        <span><small>Get it on</small><b>Google Play</b></span>
+      </a>
     </div>
   </header>
 
@@ -276,24 +265,21 @@
 
     <aside class="panel">
       <div class="panel-head"><h2>Find a match</h2></div>
-      <p class="hint">Add your name, level and number. Anyone keen can connect by WhatsApp, call or email.</p>
-      <div class="levels-key">
-        <span class="lv"><span class="chip beg"></span>Beginner</span>
-        <span class="lv"><span class="chip int"></span>Intermediate</span>
-        <span class="lv"><span class="chip pro"></span>Pro</span>
-      </div>
-      <div class="field"><label for="mName">Your name <span class="req">*</span></label><input id="mName" type="text" placeholder="e.g. Harman" maxlength="40" autocomplete="name"></div>
-      <div class="field"><label>Your level <span class="req">*</span></label>
+      <p class="hint">Add your name, level &amp; number. Connect via WhatsApp, call or email.</p>
+      <div class="field" style="margin-top:14px"><label>Your level <span class="req">*</span></label>
         <div class="lvl-row" id="lvlRow">
           <button class="lvl-btn" data-lvl="beginner" type="button"><span class="chip beg"></span>Beginner</button>
           <button class="lvl-btn" data-lvl="intermediate" type="button"><span class="chip int"></span>Inter</button>
           <button class="lvl-btn" data-lvl="pro" type="button"><span class="chip pro"></span>Pro</button>
         </div>
       </div>
-      <div class="field"><label for="mPhone">Mobile number <span class="req">*</span></label><input id="mPhone" type="tel" inputmode="tel" placeholder="98xxxxxxxx" autocomplete="tel"></div>
-      <div class="field"><label for="mEmail">Email (optional)</label><input id="mEmail" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email"></div>
-      <div class="field"><label for="mTime">Suggest a time (optional)</label><input id="mTime" type="text" placeholder="e.g. Sat after 7 PM"></div>
-      <div class="field"><label for="mNote">Short note (optional)</label><textarea id="mNote" placeholder="e.g. Friendly game, ₹100 a frame" maxlength="140"></textarea></div>
+      <div class="mform">
+        <div class="field"><label for="mName">Your name <span class="req">*</span></label><input id="mName" type="text" placeholder="e.g. Harman" maxlength="40" autocomplete="name"></div>
+        <div class="field"><label for="mPhone">Mobile number <span class="req">*</span></label><input id="mPhone" type="tel" inputmode="tel" placeholder="98xxxxxxxx" autocomplete="tel"></div>
+        <div class="field"><label for="mEmail">Email (optional)</label><input id="mEmail" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email"></div>
+        <div class="field"><label for="mTime">Suggest a time (optional)</label><input id="mTime" type="text" placeholder="e.g. Sat after 7 PM"></div>
+        <div class="field full"><label for="mNote">Short note (optional)</label><textarea id="mNote" placeholder="e.g. Friendly game, ₹100 a frame" maxlength="140"></textarea></div>
+      </div>
       <button class="btn primary" id="addPlayer" type="button" style="margin-top:14px">Post my match-up</button>
       <ul class="players" id="players"></ul>
       <div class="empty" id="emptyPlayers">No one's on the rail yet — be the first to post.</div>
