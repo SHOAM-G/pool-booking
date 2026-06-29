@@ -238,6 +238,8 @@
   .ts-name .dotg{width:11px;height:11px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
   .ts-rate{font-family:var(--mono);font-size:12px;color:var(--muted)}
   .ts-rate b{color:var(--brass-bright)}
+  .rate-in{width:64px;font:inherit;font-weight:700;font-size:13px;color:var(--brass-bright);background:rgba(0,0,0,.3);border:1px solid rgba(201,162,75,.5);border-radius:7px;padding:3px 6px;text-align:center;outline:none;margin:0 2px}
+  .rate-in:focus{border-color:var(--brass-bright)}
   .ts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;text-align:center}
   .ts-cell .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .ts-cell .big{font-family:var(--mono);font-weight:700;font-size:28px;color:var(--brass-bright);line-height:1.1;margin-top:4px}
@@ -597,12 +599,17 @@
   function saveT(){try{localStorage.setItem("sv_timers",JSON.stringify(timers));}catch(e){tmem=timers;}}
   function loadE(){try{return JSON.parse(localStorage.getItem("sv_earn")||"[]");}catch(e){return emem;}}
   function saveE(){try{localStorage.setItem("sv_earn",JSON.stringify(earn));}catch(e){emem=earn;}}
-  var timers=loadT(), earn=loadE(), selTable=TIMER_TABLES[0].id;
+  var rmem={};
+  function loadR(){try{return JSON.parse(localStorage.getItem("sv_rates")||"{}");}catch(e){return rmem;}}
+  function saveR(){try{localStorage.setItem("sv_rates",JSON.stringify(rateOv));}catch(e){rmem=rateOv;}}
+  var timers=loadT(), earn=loadE(), rateOv=loadR(), selTable=TIMER_TABLES[0].id;
+  function rate(id){var v=rateOv[id];return (v!=null&&!isNaN(v))?v:tcfg(id).rate;}
+  function setRate(id,v){v=parseInt(v,10);if(isNaN(v)||v<0)return;rateOv[id]=v;saveR();renderDash();}
   function istTime(ep){return new Date(ep).toLocaleString("en-IN",{timeZone:"Asia/Kolkata",hour:"numeric",minute:"2-digit",hour12:true});}
   function istDate(ep){return new Date(ep).toLocaleDateString("en-CA",{timeZone:"Asia/Kolkata"});}
   function elapsed(t){if(!t)return 0;var x=t.accSec||0;if(t.running)x+=(Date.now()-t.startEpoch)/1000;return Math.floor(x);}
   function hms(s){var h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=Math.floor(s%60);return h+":"+(m<10?"0":"")+m+":"+(x<10?"0":"")+x;}
-  function amt(id){return Math.round(tcfg(id).rate*elapsed(timers[id])/3600);}
+  function amt(id){return Math.round(rate(id)*elapsed(timers[id])/3600);}
   function todayTotal(){var d=istDate(Date.now()),s=0;earn.forEach(function(e){if(istDate(e.ts)===d)s+=e.amount;});return s;}
   function startTable(id){var nm=($("#tsCust")||{}).value||"",ph=($("#tsPhone")||{}).value||"";
     timers[id]={running:true,startEpoch:Date.now(),firstStart:Date.now(),accSec:0,cust:nm.trim(),phone:ph.trim()};saveT();renderDash();}
@@ -611,22 +618,22 @@
   function stopTable(id){var t=timers[id];if(!t)return;var sec=elapsed(t),a=amt(id),tab=tcfg(id),ph=t.phone||"";
     earn.push({ts:Date.now(),table:tab.name,amount:a,sec:sec});saveE();delete timers[id];saveT();renderDash();
     toast("Collected \u20b9"+a+" \u00b7 "+tab.name);if(ph)waBill(tab,sec,a,ph);}
-  function waBill(tab,sec,a,ph){var msg="The Snooker Villa\n"+tab.name+"\nTime: "+hms(sec)+"\nRate: \u20b9"+tab.rate+"/hr\nAmount: \u20b9"+a+"\nThank you!";
+  function waBill(tab,sec,a,ph){var msg="The Snooker Villa\n"+tab.name+"\nTime: "+hms(sec)+"\nRate: \u20b9"+rate(tab.id)+"/hr\nAmount: \u20b9"+a+"\nThank you!";
     window.open("https://wa.me/"+waNumber(ph)+"?text="+encodeURIComponent(msg),"_blank");}
   function renderDash(){
     var wrap=$("#ttables");if(!wrap)return;wrap.innerHTML="";
     TIMER_TABLES.forEach(function(t){var st=timers[t.id],busy=!!st;
       var el=document.createElement("div");el.className="ttable"+(t.id===selTable?" sel":"")+(busy?" busy":"");el.setAttribute("data-tt",t.id);
       var ball='<div class="tball" style="background:radial-gradient(circle at 38% 32%,#5a5a5a,'+t.col+' 72%);color:'+(t.lc||"#fff")+'">'+(t.lbl||"")+'</div>';
-      el.innerHTML='<div class="tn">'+t.name+'</div>'+ball+(busy?'<div class="tst">In use</div><div class="ttime">'+hms(elapsed(st))+'</div>':'<div class="tst">Available</div><div class="trate">\u20b9'+t.rate+'/hr</div>');
+      el.innerHTML='<div class="tn">'+t.name+'</div>'+ball+(busy?'<div class="tst">In use</div><div class="ttime">'+hms(elapsed(st))+'</div>':'<div class="tst">Available</div><div class="trate">\u20b9'+rate(t.id)+'/hr</div>');
       el.onclick=function(){selTable=t.id;renderDash();};wrap.appendChild(el);});
     var sw=$("#tsessionWrap"),id=selTable,t=timers[id],cfg=tcfg(id),running=t&&t.running,acts="";
     if(!t)acts='<button class="btn primary" id="tsStart" type="button">Start table</button>';
     else{acts+=running?'<button class="btn ghost" id="tsPause" type="button" style="flex:1">Pause</button>':'<button class="btn chalk" id="tsResume" type="button">Resume</button>';
       acts+='<button class="btn wa" id="tsWa" type="button">WhatsApp bill</button><button class="btn danger" id="tsStop" type="button">Stop &amp; collect</button>';}
-    sw.innerHTML='<div class="tsession"><div class="ts-top"><div class="ts-name">'+(running?'<span class="dotg"></span>':'')+cfg.name+'</div><div class="ts-rate">Rate: <b>\u20b9'+cfg.rate+'/hr</b></div></div>'+
+    sw.innerHTML='<div class="tsession"><div class="ts-top"><div class="ts-name">'+(running?'<span class="dotg"></span>':'')+cfg.name+'</div><div class="ts-rate">Rate: \u20b9<input id="tsRate" class="rate-in" type="number" min="0" inputmode="numeric" value="'+rate(id)+'">/hr</div></div>'+
       '<div class="ts-grid"><div class="ts-cell"><div class="k">Elapsed time</div><div class="big" id="tsElapsed">'+hms(elapsed(t))+'</div></div>'+
-      '<div class="ts-cell"><div class="k">Amount due</div><div class="big" id="tsAmount">\u20b9'+(t?amt(id):0)+'</div><div class="sub">\u20b9'+cfg.rate+'/hr</div></div></div>'+
+      '<div class="ts-cell"><div class="k">Amount due</div><div class="big" id="tsAmount">\u20b9'+(t?amt(id):0)+'</div><div class="sub">\u20b9'+rate(id)+'/hr</div></div></div>'+
       (t?'<div class="ts-start">Start time: <b>'+istTime(t.firstStart)+'</b> (IST)</div>':'')+
       '<div class="ts-cust"><input id="tsCust" type="text" placeholder="Customer name" value="'+esc((t&&t.cust)||"")+'"><input id="tsPhone" type="tel" inputmode="tel" placeholder="Mobile (for WhatsApp)" value="'+esc((t&&t.phone)||"")+'"></div>'+
       '<div class="ts-acts">'+acts+'</div></div>';
@@ -638,6 +645,7 @@
     var cu=$("#tsCust"),pp=$("#tsPhone");
     if(cu)cu.onblur=function(){if(timers[id]){timers[id].cust=cu.value.trim();saveT();}};
     if(pp)pp.onblur=function(){if(timers[id]){timers[id].phone=pp.value.trim();saveT();}};
+    var rr=$("#tsRate");if(rr)rr.onchange=function(){setRate(id,rr.value);};
     var te=$("#todayEarn");if(te)te.textContent="\u20b9"+todayTotal();
   }
   function tickTimer(){if(!isAdmin())return;
