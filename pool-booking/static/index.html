@@ -217,6 +217,39 @@
     .tabs .tab{font-size:13px;letter-spacing:.03em}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+  /* ---- Admin table timer ---- */
+  .admin-dash{display:none}
+  .tt-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:8px 0 10px}
+  .ttables{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+  .ttable{border:1.5px solid rgba(255,255,255,.12);border-radius:13px;padding:13px 10px;background:rgba(0,0,0,.18);cursor:pointer;transition:.14s;text-align:center}
+  .ttable:hover{border-color:var(--brass)}
+  .ttable.sel{border-color:var(--brass-bright);background:rgba(201,162,75,.1)}
+  .ttable.busy{border-color:rgba(95,191,138,.5)}
+  .ttable .tn{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:15px}
+  .ttable .tball{width:26px;height:26px;border-radius:50%;margin:8px auto 6px;box-shadow:inset -4px -5px 8px rgba(0,0,0,.45),inset 3px 3px 5px rgba(255,255,255,.35);display:grid;place-items:center;font:700 11px/1 var(--mono)}
+  .ttable .tst{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .ttable.busy .tst{color:var(--ok)}
+  .ttable .ttime{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--ok);margin-top:3px}
+  .ttable .trate{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--cue);margin-top:3px}
+  .tsession{border:1.5px solid rgba(201,162,75,.4);border-radius:16px;padding:18px 15px;margin-top:14px;background:radial-gradient(140% 120% at 50% 0%, rgba(23,101,68,.45), rgba(8,42,27,.55))}
+  .ts-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .ts-name{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:21px;display:flex;align-items:center;gap:9px}
+  .ts-name .dotg{width:11px;height:11px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+  .ts-rate{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .ts-rate b{color:var(--brass-bright)}
+  .ts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;text-align:center}
+  .ts-cell .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .ts-cell .big{font-family:var(--mono);font-weight:700;font-size:28px;color:var(--brass-bright);line-height:1.1;margin-top:4px}
+  .ts-cell .sub{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:2px}
+  .ts-start{font-family:var(--mono);font-size:12.5px;color:var(--cue);margin-top:12px;text-align:center}
+  .ts-start b{color:var(--brass-bright)}
+  .ts-cust{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+  .ts-cust input{width:100%;font:inherit;font-size:14px;color:var(--cue);background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:10px;outline:none}
+  .ts-acts{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+  .ts-acts .btn{flex:1;min-width:110px}
+  .tearn{margin-top:16px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .tearn b{display:block;font-size:26px;color:var(--brass-bright);letter-spacing:0;margin-top:5px}
 </style>
 </head>
 <body>
@@ -295,6 +328,14 @@
     </aside>
   </div>
 
+  <section class="panel admin-dash" id="adminDash">
+    <div class="panel-head"><h2>Table Timer</h2></div>
+    <div class="tt-lbl">Tables</div>
+    <div class="ttables" id="ttables"></div>
+    <div id="tsessionWrap"></div>
+    <div class="tearn">Total earnings (today)<b id="todayEarn">₹0</b></div>
+  </section>
+
   <footer><div class="pow">Powered by <b>SHOAM</b> — The Local Marketplace</div></footer>
 </div>
 
@@ -353,6 +394,7 @@
     $("#adminBtn").textContent=on?"🔓 Admin on":"🔒 Admin";
     $("#adminBanner").classList.toggle("show",on);
     renderSlots();renderPlayers();
+    var dash=$("#adminDash");if(dash){dash.style.display=on?"block":"none";if(on)renderDash();}
   }
 
   // ====== API ======
@@ -542,6 +584,66 @@
     });
   }
 
+  // ====== Admin table timer ======
+  var TIMER_TABLES=[
+    {id:"sn1",name:"Snooker 1",rate:400,col:"#c0392b",lc:"#fff"},
+    {id:"sn2",name:"Snooker 2",rate:400,col:"#c0392b",lc:"#fff"},
+    {id:"pl1",name:"Pool 1",rate:300,col:"#15110f",lbl:"8",lc:"#fff"},
+    {id:"pl2",name:"Pool 2",rate:300,col:"#e8b53a",lbl:"9",lc:"#111"}
+  ];
+  function tcfg(id){for(var i=0;i<TIMER_TABLES.length;i++)if(TIMER_TABLES[i].id===id)return TIMER_TABLES[i];return TIMER_TABLES[0];}
+  var tmem={}, emem=[];
+  function loadT(){try{return JSON.parse(localStorage.getItem("sv_timers")||"{}");}catch(e){return tmem;}}
+  function saveT(){try{localStorage.setItem("sv_timers",JSON.stringify(timers));}catch(e){tmem=timers;}}
+  function loadE(){try{return JSON.parse(localStorage.getItem("sv_earn")||"[]");}catch(e){return emem;}}
+  function saveE(){try{localStorage.setItem("sv_earn",JSON.stringify(earn));}catch(e){emem=earn;}}
+  var timers=loadT(), earn=loadE(), selTable=TIMER_TABLES[0].id;
+  function istTime(ep){return new Date(ep).toLocaleString("en-IN",{timeZone:"Asia/Kolkata",hour:"numeric",minute:"2-digit",hour12:true});}
+  function istDate(ep){return new Date(ep).toLocaleDateString("en-CA",{timeZone:"Asia/Kolkata"});}
+  function elapsed(t){if(!t)return 0;var x=t.accSec||0;if(t.running)x+=(Date.now()-t.startEpoch)/1000;return Math.floor(x);}
+  function hms(s){var h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=Math.floor(s%60);return h+":"+(m<10?"0":"")+m+":"+(x<10?"0":"")+x;}
+  function amt(id){return Math.round(tcfg(id).rate*elapsed(timers[id])/3600);}
+  function todayTotal(){var d=istDate(Date.now()),s=0;earn.forEach(function(e){if(istDate(e.ts)===d)s+=e.amount;});return s;}
+  function startTable(id){var nm=($("#tsCust")||{}).value||"",ph=($("#tsPhone")||{}).value||"";
+    timers[id]={running:true,startEpoch:Date.now(),firstStart:Date.now(),accSec:0,cust:nm.trim(),phone:ph.trim()};saveT();renderDash();}
+  function pauseTable(id){var t=timers[id];if(!t)return;t.accSec=elapsed(t);t.running=false;saveT();renderDash();}
+  function resumeTable(id){var t=timers[id];if(!t)return;t.startEpoch=Date.now();t.running=true;saveT();renderDash();}
+  function stopTable(id){var t=timers[id];if(!t)return;var sec=elapsed(t),a=amt(id),tab=tcfg(id),ph=t.phone||"";
+    earn.push({ts:Date.now(),table:tab.name,amount:a,sec:sec});saveE();delete timers[id];saveT();renderDash();
+    toast("Collected \u20b9"+a+" \u00b7 "+tab.name);if(ph)waBill(tab,sec,a,ph);}
+  function waBill(tab,sec,a,ph){var msg="The Snooker Villa\n"+tab.name+"\nTime: "+hms(sec)+"\nRate: \u20b9"+tab.rate+"/hr\nAmount: \u20b9"+a+"\nThank you!";
+    window.open("https://wa.me/"+waNumber(ph)+"?text="+encodeURIComponent(msg),"_blank");}
+  function renderDash(){
+    var wrap=$("#ttables");if(!wrap)return;wrap.innerHTML="";
+    TIMER_TABLES.forEach(function(t){var st=timers[t.id],busy=!!st;
+      var el=document.createElement("div");el.className="ttable"+(t.id===selTable?" sel":"")+(busy?" busy":"");el.setAttribute("data-tt",t.id);
+      var ball='<div class="tball" style="background:radial-gradient(circle at 38% 32%,#5a5a5a,'+t.col+' 72%);color:'+(t.lc||"#fff")+'">'+(t.lbl||"")+'</div>';
+      el.innerHTML='<div class="tn">'+t.name+'</div>'+ball+(busy?'<div class="tst">In use</div><div class="ttime">'+hms(elapsed(st))+'</div>':'<div class="tst">Available</div><div class="trate">\u20b9'+t.rate+'/hr</div>');
+      el.onclick=function(){selTable=t.id;renderDash();};wrap.appendChild(el);});
+    var sw=$("#tsessionWrap"),id=selTable,t=timers[id],cfg=tcfg(id),running=t&&t.running,acts="";
+    if(!t)acts='<button class="btn primary" id="tsStart" type="button">Start table</button>';
+    else{acts+=running?'<button class="btn ghost" id="tsPause" type="button" style="flex:1">Pause</button>':'<button class="btn chalk" id="tsResume" type="button">Resume</button>';
+      acts+='<button class="btn wa" id="tsWa" type="button">WhatsApp bill</button><button class="btn danger" id="tsStop" type="button">Stop &amp; collect</button>';}
+    sw.innerHTML='<div class="tsession"><div class="ts-top"><div class="ts-name">'+(running?'<span class="dotg"></span>':'')+cfg.name+'</div><div class="ts-rate">Rate: <b>\u20b9'+cfg.rate+'/hr</b></div></div>'+
+      '<div class="ts-grid"><div class="ts-cell"><div class="k">Elapsed time</div><div class="big" id="tsElapsed">'+hms(elapsed(t))+'</div></div>'+
+      '<div class="ts-cell"><div class="k">Amount due</div><div class="big" id="tsAmount">\u20b9'+(t?amt(id):0)+'</div><div class="sub">\u20b9'+cfg.rate+'/hr</div></div></div>'+
+      (t?'<div class="ts-start">Start time: <b>'+istTime(t.firstStart)+'</b> (IST)</div>':'')+
+      '<div class="ts-cust"><input id="tsCust" type="text" placeholder="Customer name" value="'+esc((t&&t.cust)||"")+'"><input id="tsPhone" type="tel" inputmode="tel" placeholder="Mobile (for WhatsApp)" value="'+esc((t&&t.phone)||"")+'"></div>'+
+      '<div class="ts-acts">'+acts+'</div></div>';
+    if($("#tsStart"))$("#tsStart").onclick=function(){startTable(id);};
+    if($("#tsPause"))$("#tsPause").onclick=function(){pauseTable(id);};
+    if($("#tsResume"))$("#tsResume").onclick=function(){resumeTable(id);};
+    if($("#tsStop"))$("#tsStop").onclick=function(){stopTable(id);};
+    if($("#tsWa"))$("#tsWa").onclick=function(){var ph=$("#tsPhone").value.trim();if(!ph){toast("Add a mobile number first.");return;}waBill(cfg,elapsed(t),amt(id),ph);};
+    var cu=$("#tsCust"),pp=$("#tsPhone");
+    if(cu)cu.onblur=function(){if(timers[id]){timers[id].cust=cu.value.trim();saveT();}};
+    if(pp)pp.onblur=function(){if(timers[id]){timers[id].phone=pp.value.trim();saveT();}};
+    var te=$("#todayEarn");if(te)te.textContent="\u20b9"+todayTotal();
+  }
+  function tickTimer(){if(!isAdmin())return;
+    TIMER_TABLES.forEach(function(t){var st=timers[t.id];if(!st||!st.running)return;var c=document.querySelector('.ttable[data-tt="'+t.id+'"] .ttime');if(c)c.textContent=hms(elapsed(st));});
+    var st=timers[selTable];if(st&&st.running){var e=$("#tsElapsed"),a=$("#tsAmount");if(e)e.textContent=hms(elapsed(st));if(a)a.textContent="\u20b9"+amt(selTable);}}
+
   // ====== Init ======
   buildDays();
   reflectAdmin();
@@ -551,6 +653,7 @@
     if(dates.length&&dates[0]!==d)buildDays();   // roll the window when the date changes
     refresh(false);
   },POLL_MS);
+  setInterval(tickTimer,1000);
   window.addEventListener("focus",function(){buildDays();refresh(false);});
 })();
 </script>
