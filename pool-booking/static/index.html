@@ -19,9 +19,10 @@
     --display:'Oswald',sans-serif;--body:'DM Sans',system-ui,sans-serif;--mono:'Space Mono',monospace;
   }
   *{box-sizing:border-box}html,body{margin:0}
+  html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}
   body{font-family:var(--body);color:var(--cue);
     background:radial-gradient(120% 90% at 50% -10%, #134a31 0%, var(--felt-edge) 60%, #06160e 100%);
-    min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased}
+    min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   a{color:var(--chalk-bright)}
   .wrap{max-width:1180px;margin:0 auto;padding:24px 18px 60px}
 
@@ -98,7 +99,7 @@
   .tabs{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0}
   .tab{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-weight:500;font-size:17px;
     color:var(--cue);background:rgba(0,0,0,.22);border:1px solid rgba(201,162,75,.35);border-radius:9px;
-    padding:12px 16px;cursor:pointer;transition:.15s;line-height:1}
+    padding:16px 16px;cursor:pointer;transition:.15s;line-height:1}
   .tab:hover{border-color:var(--brass)}
   .tab[aria-selected="true"]{background:var(--brass);color:#231405;border-color:var(--brass-bright);font-weight:600}
   .tab.blue{border-color:rgba(84,187,220,.55)}
@@ -146,7 +147,7 @@
   .lvl-row .lvl-btn.sel{border-color:var(--brass-bright);background:rgba(201,162,75,.16)}
 
   .btn{font-family:var(--display);text-transform:uppercase;letter-spacing:.07em;font-weight:600;font-size:17px;
-    border:none;border-radius:10px;padding:13px 16px;cursor:pointer;transition:.15s;width:100%}
+    border:none;border-radius:10px;padding:16px 16px;cursor:pointer;transition:.15s;width:100%}
   .btn:disabled{opacity:.5;cursor:not-allowed}
   .btn.primary{background:var(--brass);color:#231405}.btn.primary:hover:not(:disabled){background:var(--brass-bright)}
   .btn.chalk{background:var(--chalk);color:#03222b}.btn.chalk:hover:not(:disabled){background:var(--chalk-bright)}
@@ -207,7 +208,7 @@
     .store{flex:1;justify-content:center;min-width:0}
     .panel{padding:18px 14px}
     .tabs{gap:6px}
-    .tabs .tab{flex:1;text-align:center;min-width:0;padding:12px 6px;font-size:15px}
+    .tabs .tab{flex:1;text-align:center;min-width:0;padding:18px 6px;font-size:14px;letter-spacing:.02em}
     .slots{grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:9px}
     .modal-acts .btn{min-width:0}
     .player .acts{flex-wrap:wrap}
