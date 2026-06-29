@@ -35,6 +35,7 @@ CORS(app)
 # ---------------------------------------------------------------- config
 SHEET_ID = os.environ.get("SHEET_ID", "")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "snooker123")  # <-- CHANGE in Railway
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "")  # where new-booking alerts go
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 IST = timezone(timedelta(hours=5, minutes=30))  # hall's local time
 
@@ -230,6 +231,16 @@ def api_book():
         book_w.append_row([date, table, hour, name, phone,
                            datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S")])
         bust_cache()
+    # notify the admin (works even when no one has the page open)
+    label = clean(d.get("label"), 120) or (date + " · table " + str(table) + " · " + str(hour) + ":00")
+    try:
+        if ADMIN_EMAIL:
+            send_email(ADMIN_EMAIL, "New booking — " + label,
+                       "New booking at The Snooker Villa\n\n" + label +
+                       "\nName: " + name + "\nPhone: " + phone +
+                       "\n\n— Powered by SHOAM: The Local Marketplace")
+    except Exception as e:
+        app.logger.warning("admin notify failed: %s", e)
     return jsonify({"ok": True})
 
 
