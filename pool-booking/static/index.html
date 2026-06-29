@@ -103,12 +103,12 @@
   .tab.blue:hover{border-color:var(--chalk-bright)}
   .tab.blue[aria-selected="true"]{background:var(--chalk);color:#04222b;border-color:var(--chalk-bright)}
 
-  .slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px;min-height:60px}
-  .slot{position:relative;min-width:0;border-radius:12px;padding:13px 12px 12px;cursor:pointer;border:1px solid rgba(255,255,255,.10);
+  .slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px;min-height:60px}
+  .slot{position:relative;min-width:0;border-radius:10px;padding:10px 8px 9px;cursor:pointer;border:1px solid rgba(255,255,255,.10);
     background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.12));text-align:left;transition:.14s;color:var(--cue);font:inherit}
   .slot:hover{border-color:var(--chalk-bright);transform:translateY(-1px)}
-  .slot .t{font-family:var(--mono);font-weight:700;font-size:18px;letter-spacing:.01em;white-space:nowrap}
-  .slot .meta{font-size:13px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .slot .t{font-family:var(--mono);font-weight:700;font-size:14px;letter-spacing:0;white-space:nowrap}
+  .slot .meta{font-size:11px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .slot.open .meta{color:#bcd0c6}
   .slot.booked{background:linear-gradient(180deg, rgba(0,0,0,.4), rgba(0,0,0,.55));border-color:rgba(201,162,75,.4)}
   .slot.booked .t{color:var(--brass-bright)}
@@ -137,14 +137,17 @@
     background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:11px;outline:none;transition:.14s}
   .field textarea{resize:vertical;min-height:60px;font-size:16px}
   .field input:focus,.field textarea:focus{border-color:var(--chalk-bright);background:rgba(0,0,0,.38)}
-  .lvl-row{display:flex;gap:8px}
-  .lvl-row .lvl-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;
+  .lvl-row{display:flex;gap:8px;flex-wrap:wrap}
+  .lvl-row .lvl-btn{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;
     border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:12px 6px;background:rgba(0,0,0,.22);font-size:14px;transition:.14s;text-transform:capitalize;color:var(--cue)}
   .lvl-row .lvl-btn:hover{border-color:var(--brass)}
   .lvl-row .lvl-btn.sel{border-color:var(--brass-bright);background:rgba(201,162,75,.16)}
-  .mform{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .mform{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
   .mform .field{margin-top:11px}
-  .mform .full{grid-column:1 / -1}
+  .mform .full{grid-column:auto}
+  .mform .field label{font-size:9px;letter-spacing:.04em;margin-bottom:4px}
+  .mform .field input,.mform .field textarea{font-size:13px;padding:8px 7px}
+  .mform .field textarea{min-height:40px}
 
   .btn{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-weight:600;font-size:16px;
     border:none;border-radius:11px;padding:15px 16px;cursor:pointer;transition:.15s;width:100%}
@@ -155,6 +158,7 @@
   .btn.ghost{background:transparent;color:var(--cue);border:1px solid rgba(255,255,255,.18);width:auto;padding:10px 14px;font-size:14.5px}
   .btn.ghost:hover{border-color:var(--danger);color:var(--danger)}
   .btn.danger{background:var(--danger);color:#2a0c06}
+  #addPlayer{width:auto;min-width:200px;display:block;margin:14px auto 0!important}
 
   .players{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:11px}
   .player{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 13px;
@@ -206,13 +210,13 @@
     .panel{padding:20px 16px}
     .panel-head h2{font-size:23px}
     .tabs{gap:7px}
-    .tabs .tab{flex:1;text-align:center;min-width:0;padding:13px 5px;font-size:13.5px;letter-spacing:.02em}
-    .slots{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .tabs .tab{flex:0 0 auto;text-align:center;min-width:0;padding:12px 16px;font-size:13.5px;letter-spacing:.02em}
+    .slots{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
     .modal-acts .btn{min-width:0}
     .player .acts{flex-wrap:wrap}
   }
   @media(max-width:400px){
-    .slots{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .slots{grid-template-columns:repeat(3,minmax(0,1fr))}
     .tabs .tab{font-size:13px;letter-spacing:.03em}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
