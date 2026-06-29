@@ -409,12 +409,20 @@
 
   // ====== State ======
   var bookings={}, players=[], dates=[], curDate="", curTable=1, selLevel=null;
+  var seenBk=null, _ac=null, _titleT=null;
+  function beep(){try{_ac=_ac||new (window.AudioContext||window.webkitAudioContext)();var o=_ac.createOscillator(),g=_ac.createGain();o.connect(g);g.connect(_ac.destination);o.type="sine";o.frequency.value=880;g.gain.setValueAtTime(.0001,_ac.currentTime);g.gain.exponentialRampToValueAtTime(.25,_ac.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,_ac.currentTime+.5);o.start();o.stop(_ac.currentTime+.5);}catch(e){}}
+  function flashTitle(){var orig="The Snooker Villa";clearInterval(_titleT);var on=false,n=0;_titleT=setInterval(function(){document.title=(on?"\uD83D\uDD14 New booking!":orig);on=!on;if(++n>8){clearInterval(_titleT);document.title=orig;}},700);}
+  function notifyBooking(keys){if(!isAdmin())return;var nm=(bookings[keys[0]]||{}).name||"someone";toast("\uD83D\uDD14 New booking — "+nm+(keys.length>1?" +"+(keys.length-1)+" more":""));beep();flashTitle();}
 
   function refresh(showErr){
     return api("/api/state").then(function(d){
       setOnline(true);bookings={};
       (d.bookings||[]).forEach(function(b){bookings[b.date+"|"+b.table+"|"+b.hour]={name:b.name,phone:b.phone};});
-      players=d.players||[];renderSlots();renderPlayers();
+      players=d.players||[];
+      var keys=Object.keys(bookings);
+      if(seenBk===null){seenBk={};keys.forEach(function(k){seenBk[k]=1;});}
+      else{var added=keys.filter(function(k){return !seenBk[k];});var ns={};keys.forEach(function(k){ns[k]=1;});seenBk=ns;if(added.length)notifyBooking(added);}
+      renderSlots();renderPlayers();
     }).catch(function(e){setOnline(false);if(showErr)toast("Can't reach the server. "+e.message,true);});
   }
 
@@ -478,7 +486,7 @@
       if(!nm){toast("Please enter a name.");$("#bName").focus();return;}
       if(digits(ph).length<10){toast("Mobile number is required.");$("#bPhone").focus();return;}
       var btn=this;btn.disabled=true;btn.textContent="Booking…";
-      api("/api/bookings",{method:"POST",body:JSON.stringify({date:curDate,table:curTable,hour:hour,name:nm,phone:ph})})
+      api("/api/bookings",{method:"POST",body:JSON.stringify({date:curDate,table:curTable,hour:hour,name:nm,phone:ph,label:tableName(curTable)+" · "+prettyDate(curDate)+" · "+fmtHour(hour)})})
         .then(function(){closeModal();return refresh();})
         .then(function(){toast("Booked · "+prettyDate(curDate)+" "+fmtHour(hour)+" · "+tableName(curTable));})
         .catch(function(e){btn.disabled=false;btn.textContent="Confirm booking";toast(e.message,true);if(/taken/i.test(e.message)){closeModal();refresh();}});
